@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 6</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // https://img.796t.com/res/2020/12-03/11/34b0cfeace1b938ef584b64eb2bc92e7.png
+        // 生命週期函數：在某一個時刻會自動執行的函數
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hello world",
+                };
+            },
+            // 在實例生成之前會自動執行的函數
+            beforeCreate() {
+                console.log("beforeCreate");
+            },
+            // 在實例生成之後會自動執行的函數
+            created() {
+                console.log("created");
+            },
+            // 在組件內容被渲染到頁面之前立即自動執行的函數
+            beforeMount() {
+                console.log(
+                    document.getElementById("root").innerHTML,
+                    "beforeMount"
+                );
+            },
+            // 在組件內容被渲染到頁面之後自動執行的函數
+            mounted() {
+                console.log(
+                    document.getElementById("root").innerHTML,
+                    "mounted"
+                );
+            },
+            // 當數據發生變化時會自動執行的函數
+            beforeUpdate() {
+                console.log(
+                    document.getElementById("root").innerHTML,
+                    "beforeUpdate"
+                );
+            },
+            // 當數據發生變化，頁面重新渲染後，會自動執行的函數
+            updated() {
+                console.log(
+                    document.getElementById("root").innerHTML,
+                    "updated"
+                );
+            },
+            // 當 Vue 應用失效時，自動執行的函數
+            beforeUnmount() {
+                console.log(
+                    document.getElementById("root").innerHTML,
+                    "beforeUnmount"
+                );
+            },
+            // 當 Vue 應用失效時，且 dom 完全消毀之後，自動執行的函數
+            unmounted() {
+                console.log("unmounted");
+            },
+            template: "<div>{{message}}</div>",
+        });
+
+        const vm = app.mount("#root");
+    </script>
+</html>
