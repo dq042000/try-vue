@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 16</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // <div><test v-bind="params" /></div>
+        // 屬性傳遞的時候，使用 content-abc 這種命名，接收的時候，使用 contentAbc 命名
+        // const app = Vue.createApp({
+        //     data() {
+        //         return {
+        //             // params: {
+        //             //     content: 1230,
+        //             //     a: 123,
+        //             //     b: 456,
+        //             //     c: 789,
+        //             // },
+        //             content: 1234,
+        //         };
+        //     },
+        //     template: `
+        //         <div><test :content-abc="content" /></div>
+        //     `,
+        // });
+        // app.component("test", {
+        //     props: ["contentAbc"],
+        //     template: `<div>{{contentAbc}}</div>`,
+        // });
+
+        // 單項數據流的概念：子組件可以使用父組件傳遞過來的數據，但是絕對不能修改傳遞過來的數據
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 1234,
+                };
+            },
+            template: `
+                <div><counter :count="num" /></div>
+            `,
+        });
+        // 父組件的 count 可以流向子組件，但是子組件不可以反向的修改父組件的 count
+        app.component("counter", {
+            props: ["count"],
+            // 唯一可以修改的方法是，可以定義自已的數據 myCount 再進行修改
+            data() {
+                return {
+                    myCount: this.count,
+                };
+            },
+            template: `<div @click="myCount += 1">{{myCount}}</div>`,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
