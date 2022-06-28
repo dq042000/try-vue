@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 13</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // 組件的定義
+        // 組件具備複用性
+        // 全局組件，只要定義了，處處可以使用，性能不高，但是使用起來簡單, 名字建議，小寫字母單詞，中間用橫線間隔
+        // 局部組件，定義了，要註冊之後才能使用，性能比較高，使用起來有些麻煩，名字建議，大寫字母開頭，駝峰命名
+        // 局部組件使用時，要做一個名字和組件間的映射對象，你不寫映射，Vue 底層也會自動嘗試幫你做映射
+
+        const Counter = {
+            data() {
+                return {
+                    count: 1,
+                };
+            },
+            template: `<div @click="count += 1">{{count}}</div>`,
+        };
+        const HelloWorld = {
+            template: `<div>Hello world</div>`,
+        };
+
+        const app = Vue.createApp({
+            components: {
+                // counter: Counter,
+                // "hello-world": HelloWorld,
+                Counter,
+                HelloWorld,
+            },
+            data() {
+                return {};
+            },
+            template: `
+                <div>
+                    <counter />
+                    <hello-world />
+                </div>
+            `,
+        });
+
+        // app.component("counter-parent", {
+        //     template: `<counter />`,
+        // });
+        // app.component("counter", {
+        //     data() {
+        //         return {
+        //             count: 1,
+        //         };
+        //     },
+        //     template: `<div @click="count += 1">{{count}}</div>`,
+        // });
+        const vm = app.mount("#root");
+    </script>
+</html>
