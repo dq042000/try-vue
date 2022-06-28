@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 11</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    listArray: ["dell", "lee", "teacher"],
+                    listObject: {
+                        name: "dell",
+                        lastName: "lee",
+                        job: "teacher",
+                    },
+                };
+            },
+            methods: {
+                handleAddBtnClick() {
+                    // 1. 使用數組的變更函數 push, pop, shift, unshift, splice, sort, reverse
+                    // this.listArray.push("hello");
+                    // this.listArray.pop();    // 從最後頭刪除
+                    // this.listArray.shift(); // 從開頭刪除
+                    // this.listArray.unshift("hello"); // 從開頭新增
+                    // this.listArray.reverse(); // 排序
+
+                    // 2. 直接替換數組
+                    // this.listArray = ["bye", "world"];
+                    // this.listArray = ["bye"].concat(["world"]);
+                    // this.listArray = ["bye", "wolrd"].filter(
+                    //     (item) => item === "bye"
+                    // );
+
+                    // 3. 直接更新數組的內容
+                    // this.listArray[1] = "hello";
+
+                    // 直接添加對象的內容，也可以自動的展示出來
+                    this.listObject.age = 100;
+                    this.listObject.sex = "male";
+                },
+            },
+
+            // div 裡面的 template 是佔位符
+            // 使用template佔位符了：可以幫助我們去包裹一些元素，但是在真正的渲染中並不會渲染在頁面上
+            template: `
+                <div>
+                    <template 
+                        v-for="(value, key, index) in listObject" 
+                        :key="index"
+                    >
+                        <div v-if="key !== 'lastName'">
+                            {{value}} - {{key}}
+                        </div>
+                    </template>
+                    <div v-for="item in 10">{{item}}</div>
+                    <button @click="handleAddBtnClick">新增</button>
+                </div>
+            `,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
