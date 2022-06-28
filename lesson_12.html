@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 12</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // event, $event
+        // 事件修飾符： stop, prevent, capture, self, once, passive
+        // 按鍵修飾符： enter, tab, delete, esc, up, down, left, right
+        // 滑鼠修飾符： left, right, middle
+        // 精確修飾符： exact
+        const app = Vue.createApp({
+            data() {
+                return {
+                    counter: 0,
+                };
+            },
+            methods: {
+                handleBtnClick() {
+                    this.counter += 1;
+                },
+                handleDivClick() {
+                    alert("div clicked");
+                },
+                handleKeyDown() {
+                    console.log("keydown");
+                },
+                handleClick() {
+                    console.log("click");
+                },
+            },
+            template: `
+                <div @click.self="handleDivClick">
+                    {{counter}}
+                    <button @click="handleBtnClick">button</button>
+                </div>
+                <div>
+                    <input @keydown.delete="handleKeyDown" />
+                </div>
+                <div>
+                    <div @click.ctrl.exact="handleClick">123</div>
+                </div>
+            `,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
