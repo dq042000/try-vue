@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 14</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 1230,
+                };
+            },
+            // 第一組 content 是靜態傳遞參數
+            // <div><test content="hello world" /></div>
+            // 第二組 :content 是動態傳遞參數
+            // <div><test :content="num" /></div>
+            template: `
+                <div><test :content="num" /></div>
+            `,
+        });
+        // 父組件傳遞 content 值給子組件
+        // app.component("test", {
+        //     props: ["content"], // 接收父組件傳遞 content
+        //     template: `<div>{{typeof content}}</div>`,
+        // });
+
+        // 子組件 test 接收一個 content 外部傳遞過來的屬性
+        // content 傳遞過來的屬性，必須是 String 類型
+        app.component("test", {
+            props: {
+                // type: String, Boolean, Array, Object, Function, Symbol
+                // required 必填(true)
+                // validator 驗證
+                // default 默認值
+                content: {
+                    type: Number,
+                    validator: function (value) {
+                        return value < 1000;
+                    },
+                    // required: true,
+                    // default: 789,
+                    default: function () {
+                        return 456;
+                    },
+                },
+            },
+            template: `<div>{{content}}</div>`,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
