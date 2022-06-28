@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 17</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // Non-prop 屬性
+        const app = Vue.createApp({
+            template: `
+                <div><counter msg1="hello1" msg2="hello2" /></div>
+            `,
+        });
+        // return: <div msg1="hello1">counter1</div>
+        // return: <div msg1="hello1" msg2="hello2">counter2</div>
+        // return: <div msg3="hello1">counter3</div>
+        app.component("counter", {
+            inheritAttrs: false,
+            template: `
+                <div :msg1="$attrs.msg1">counter1</div>
+                <div v-bind="$attrs">counter2</div>
+                <div :msg2="$attrs.msg2">counter3</div>
+            `,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
