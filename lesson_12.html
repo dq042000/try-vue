@@ -11,41 +11,103 @@
         <div id="root"></div>
     </body>
     <script>
-        // event, $event
-        // 事件修飾符： stop, prevent, capture, self, once, passive
-        // 按鍵修飾符： enter, tab, delete, esc, up, down, left, right
-        // 滑鼠修飾符： left, right, middle
-        // 精確修飾符： exact
+        // input, textarea, checkbox, radio, select
+        // 修飾符
         const app = Vue.createApp({
             data() {
                 return {
-                    counter: 0,
+                    message1: "hello",
+                    message2: 123,
+                    message3: "hello",
+                    checkbox1: true,
+                    checkbox2: [],
+                    radio1: "",
+                    select1: "",
+                    select2: [],
+                    select3: [],
+                    options3: [
+                        {
+                            text: "A",
+                            value: "A",
+                        },
+                        {
+                            text: "B",
+                            value: "B",
+                        },
+                        {
+                            text: "C",
+                            value: "C",
+                        },
+                    ],
+                    select4: [],
+                    options4: [
+                        {
+                            text: "A",
+                            value: { value: "A" },
+                        },
+                        {
+                            text: "B",
+                            value: { value: "B" },
+                        },
+                        {
+                            text: "C",
+                            value: { value: "C" },
+                        },
+                    ],
+                    checkbox3: "world",
                 };
             },
-            methods: {
-                handleBtnClick() {
-                    this.counter += 1;
-                },
-                handleDivClick() {
-                    alert("div clicked");
-                },
-                handleKeyDown() {
-                    console.log("keydown");
-                },
-                handleClick() {
-                    console.log("click");
-                },
-            },
             template: `
-                <div @click.self="handleDivClick">
-                    {{counter}}
-                    <button @click="handleBtnClick">button</button>
-                </div>
                 <div>
-                    <input @keydown.delete="handleKeyDown" />
-                </div>
-                <div>
-                    <div @click.ctrl.exact="handleClick">123</div>
+                    {{message1}}
+                    <input v-model="message1" /><br /><br />
+                    <input v-model.lazy="message1" /><br /><br />
+                    <textarea v-model="message1" /><br /><br />
+                    <input type="checkbox" v-model="checkbox1" /><br /><br />
+
+                    {{typeof message2}}
+                    <input v-model.number="message2" type="number" /><br /><br />
+
+                    {{message3}}
+                    <input v-model.trim="message3" /><br /><br />
+
+                    {{checkbox2}}
+                    jack <input type="checkbox" v-model="checkbox2" value="jack" />
+                    dell <input type="checkbox" v-model="checkbox2" value="dell" />
+                    lee <input type="checkbox" v-model="checkbox2" value="lee" /><br /><br />
+
+                    {{radio1}}
+                    jack <input type="radio" v-model="radio1" value="jack" />
+                    dell <input type="radio" v-model="radio1" value="dell" />
+                    lee <input type="radio" v-model="radio1" value="lee" /><br /><br />
+
+                    {{select1}}
+                    <select v-model="select1">
+                        <option disabled value="">請選擇內容</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select><br /><br />
+
+                    {{select2}}
+                    <select v-model="select2" multiple>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select><br /><br />
+
+                    {{select3}}
+                    <select v-model="select3" multiple>
+                        <option v-for="item in options3" :value="item.value">{{item.text}}</option>
+                    </select><br /><br />
+
+                    {{select4}}
+                    <select v-model="select4" multiple>
+                        <option v-for="item in options4" :value="item.value">{{item.text}}</option>
+                    </select><br /><br />
+
+                    {{checkbox3}}
+                    <input type="checkbox" v-model="checkbox3" true-value="hello" false-value="world" /><br /><br />
                 </div>
             `,
         });
