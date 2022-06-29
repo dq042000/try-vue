@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 19</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // @ 是監聽事件的符號
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 1,
+                };
+            },
+            // 監聽事件的時候，名字不能是駝峰，要用橫線間隔
+            template: `
+                <div>
+                    <counter v-model="count" />
+                </div>
+            `,
+        });
+        app.component("counter", {
+            props: ["modelValue"], // 接收值名稱一定要叫 modelValue
+            methods: {
+                // 子組件內部觸發事件，事件的名字要駝峰來命名
+                handleClick() {
+                    this.$emit("update:modelValue", this.modelValue + 3);
+                },
+            },
+            template: `
+                <div @click="handleClick">{{modelValue}}</div>
+            `,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
