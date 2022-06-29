@@ -11,44 +11,54 @@
         <div id="root"></div>
     </body>
     <script>
-        // slot 插槽
-        // slot 中使用的數據，作用域的問題
-        // 父模版裡調用的數據屬性，使用的都是父模版裡的數據
-        // 子模版裡調用的數據屬性，使用的都是子模版裡的數據
+        // 動態組件：根據數據的變化，結合 component 這個標籤，來隨時動態切換組件的顯示
+        // 異步組件：異步執行某些組件的邏輯，這叫做異步組件
         const app = Vue.createApp({
             data() {
                 return {
-                    text: "提交",
+                    currentItem: "input-item",
                 };
             },
-            template: `
-                <div>
-                    <myform>
-                        <div>{{text}}</div>
-                    </myform>
-                    <myform>
-                        <button>{{text}}</button>
-                    </myform>
-                    <myform>
-                    </myform>
-                </div>
-            `,
-        });
-        app.component("myform", {
             methods: {
                 handleClick() {
-                    alert(123);
+                    if (this.currentItem === "input-item") {
+                        this.currentItem = "common-item";
+                    } else {
+                        this.currentItem = "input-item";
+                    }
                 },
             },
             template: `
+                <keep-alive>
+                    <component :is="currentItem" />
+                </keep-alive>
+                <button @click="handleClick">切換</button>
+                <br /><br />
                 <div>
-                    <input />
-                    <span @click="handleClick">
-                        <slot>defalult value</slot>
-                    </span>
+                    <common-item />
+                    <async-common-item />
                 </div>
             `,
         });
+        app.component("input-item", {
+            template: `<input />`,
+        });
+        app.component("common-item", {
+            template: `<div>hello world</div>`,
+        });
+        // 異步組件
+        app.component(
+            "async-common-item",
+            Vue.defineAsyncComponent(() => {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve({
+                            template: `<div>this is an async component</div>`,
+                        });
+                    }, 4000);
+                });
+            })
+        );
         const vm = app.mount("#root");
     </script>
 </html>
