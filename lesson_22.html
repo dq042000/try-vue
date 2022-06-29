@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 22 基礎語法知識點查缺補漏</title>
+        <script src="https://unpkg.com/vue@3"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // v-once 讓某個元素標籤只渲染一次
+        // ref 實際上是獲取 Dom 節點/組件引用 用的一個語法
+        // provide / inject
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 3,
+                };
+            },
+            provide() {
+                return {
+                    count: this.count,
+                };
+            },
+            template: `
+                <div>
+                    <child :count="count" />
+                </div>
+            `,
+        });
+        app.component("child", {
+            template: `<child-child />`,
+        });
+        app.component("child-child", {
+            inject: ["count"],
+            template: `<div>{{count}}</div>`,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
