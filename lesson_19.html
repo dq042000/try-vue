@@ -11,26 +11,32 @@
         <div id="root"></div>
     </body>
     <script>
-        // @ 是監聽事件的符號
         const app = Vue.createApp({
             data() {
                 return {
-                    count: 1,
+                    count: "a",
                 };
             },
-            // 監聽事件的時候，名字不能是駝峰，要用橫線間隔
             template: `
                 <div>
-                    <counter v-model="count" />
+                    <counter v-model.uppercase="count" />
                 </div>
             `,
         });
         app.component("counter", {
-            props: ["modelValue"], // 接收值名稱一定要叫 modelValue
+            props: {
+                modelValue: String,
+                modelModifiers: {
+                    default: () => ({}),
+                },
+            },
             methods: {
-                // 子組件內部觸發事件，事件的名字要駝峰來命名
                 handleClick() {
-                    this.$emit("update:modelValue", this.modelValue + 3);
+                    let newValue = this.modelValue + "b";
+                    if (this.modelModifiers.uppercase) {
+                        newValue = newValue.toUpperCase(); // 轉大寫
+                    }
+                    this.$emit("update:modelValue", newValue);
                 },
             },
             template: `
