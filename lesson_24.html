@@ -49,6 +49,26 @@
                 handleClick() {
                     this.show = !this.show;
                 },
+                handleBeforeEnter(el) {
+                    el.style.color = "red";
+                },
+                handleEnterActive(el, done) {
+                    const animation = setInterval(() => {
+                        const color = el.style.color;
+                        if (color === "red") {
+                            el.style.color = "green";
+                        } else {
+                            el.style.color = "red";
+                        }
+                    }, 1000);
+                    setTimeout(() => {
+                        clearInterval(animation);
+                        done();
+                    }, 3000);
+                },
+                handleEnterEnd() {
+                    alert(123);
+                },
             },
             // <transition :duration="{enter: 1000, leave: 3000}">
             // <transition :duration="1000">
@@ -60,6 +80,8 @@
                     <transition 
                         :css="false"
                         @before-enter="handleBeforeEnter"
+                        @enter="handleEnterActive"
+                        @after-enter="handleEnterEnd"
                     >
                         <div v-if="show">hello world</div>
                     </transition>
