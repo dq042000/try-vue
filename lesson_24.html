@@ -9,7 +9,7 @@
         </title>
         <script src="https://unpkg.com/vue@3"></script>
         <style>
-            @keyframes shake {
+            /* @keyframes shake {
                 0% {
                     transform: translateX(-100px);
                 }
@@ -20,12 +20,18 @@
                     transform: translateX(50px);
                 }
             }
-            .v-leave-active {
-                animation: shake 3s;
+            .v-enter-from {
+                color: red;
             }
             .v-enter-active {
                 animation: shake 3s;
+                transition: color 10s ease-in;
             }
+            .v-leave-active {
+                color: red;
+                animation: shake 3s;
+                transition: all 10s ease-in;
+            } */
         </style>
     </head>
     <body>
@@ -44,9 +50,17 @@
                     this.show = !this.show;
                 },
             },
+            // <transition :duration="{enter: 1000, leave: 3000}">
+            // <transition :duration="1000">
+            // <transition type="transition">
+            // <transition type="animation">
+            // <transition :css="false">    // 不使用css效果
             template: `
                 <div>
-                    <transition>
+                    <transition 
+                        :css="false"
+                        @before-enter="handleBeforeEnter"
+                    >
                         <div v-if="show">hello world</div>
                     </transition>
                     <button @click="handleClick">切換</button><br /><br />
