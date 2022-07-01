@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lesson 28 Mixin 混入的基礎語法</title>
+        <script src="https://unpkg.com/vue@3"></script>
+        <style></style>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        // mixin 混入
+        // 組件 data, methods 優先級 高於 mixin data, methods 優先級
+        // 生命週期函數，先執行 mixin 裡面的，再執行組件裡面的
+        const myMixin = {
+            data() {
+                return {
+                    number: 2,
+                };
+            },
+        };
+
+        // mixin 混入：當組件裡沒有數據的時候，會使用混入進來的數據
+        const app = Vue.createApp({
+            data() {
+                return {
+                    number: 1,
+                };
+            },
+            template: `
+                <div>
+                    <div>{{number}}</div>
+                    <button @click="handleClick">增加</button><br /><br />
+                </div>
+            `,
+        });
+
+        // 全局
+        // app.mixin({
+        //     data() {
+        //         return {
+        //             number: 2,
+        //             count: 78,
+        //         };
+        //     },
+        //     created() {
+        //         console.log("mixin created");
+        //     },
+        //     methods: {
+        //         handleClick() {
+        //             console.log("mixin handleClick");
+        //         },
+        //     },
+        // });
+
+        const vm = app.mount("#root");
+    </script>
+</html>
