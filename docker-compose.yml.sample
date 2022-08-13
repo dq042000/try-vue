@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+  memcached:
+    image: memcached
+    restart: always
+    ports:
+      - '11211'
+
+  vite:
+    build: .docker/vue    
+    working_dir: /www/vite
+    volumes:
+      - ./web:/www
+    ports:
+      - 3000:3000
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=development
