@@ -1,6 +1,6 @@
 <template>
     <div class="layout">
-        <Menu></Menu>
+        <Menu @on-click="getList" :data="list" title="我一褲子"></Menu>
         <div class="layout-right">
             <Header></Header>
             <Content></Content>
@@ -12,6 +12,12 @@
 import Menu from "./Menu/index.vue";
 import Header from "./Header/index.vue";
 import Content from "./Content/index.vue";
+import { reactive } from "vue";
+
+const list = reactive<number[]>([1, 2, 3]);
+const getList = (list: number[]) => {
+    console.log(list, "我是子組件傳過來的list");
+};
 </script>
 
 <style lang="less" scoped>
