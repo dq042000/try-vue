@@ -1,45 +1,29 @@
+# 親師生 APP 帳號設置安裝
+
 ## 腳本安裝
 
 ### 第一次安裝使用以下指令
 
 ```bash
+$ sh setup.sh -init
+```
+
+### 啟動開發環境
+
+```bash
 $ sh setup.sh
 ```
 
-### 如果已經安裝過，且 DB 都已經有裝好了，單純要啟動容器及服務，使用以下指令
+### 測試啟動正式環境
+```bash
+$ sh setup.sh -testbuild
+```
+
+### 如果已經安裝過，單純要啟動容器及服務，使用以下指令
 
 ```bash
-$ sh setup.sh -nodb
+$ sh setup.sh
 ```
 
-## 手動安裝
-
-### docker 設定檔
-
-```
-cp docker-compose-sample.yml docker-compose.yml
-```
-
-### 啟動 docker
-
-```
-docker-compose up -d --build
-```
-
-### 安裝 vue library
-
-```
-docker exec -ti my-project-03_vite_1 yarn
-```
-
-### 執行 vue
-
-```
-docker exec -ti my-project-03_vite_1 yarn dev
-```
-
-### 網站
-
-```
+## 網站
 http://localhost:3000/
-```

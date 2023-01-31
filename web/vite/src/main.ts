@@ -1,5 +1,14 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import "./assets/css/reset.less";
+import { createApp } from 'vue'
+import { createPinia } from './stores'
 
-createApp(App).mount("#app");
+import App from './App.vue'
+import router from './router'
+
+import './assets/main.css'
+
+const app = createApp(App)
+
+app.use(createPinia())
+app.use(router)
+
+app.mount('#app')
