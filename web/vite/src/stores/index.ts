@@ -1,11 +1,13 @@
 import { createPinia as _createPinia, Pinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 import { useCounterStore } from './modules/counter'
+import { useTest001 } from './modules/test-001'
 
 let pinia: Pinia
 
 const useStore = {
-  useCounterStore
+  useCounterStore,
+  useTest001
 }
 
 export const createPinia = (): Pinia => {

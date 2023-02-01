@@ -2,27 +2,31 @@
   <div class="about">
     <h1>This is an about page</h1>
     <div>
-      <span class="text-9xl font-semibold text-sky-600">{{
-        counterStore.count
-      }}</span>
-    </div>
-    <div>
-      <span class="text-9xl font-semibold text-sky-600">{{
-        counterStore.doubleCount
-      }}</span>
-    </div>
-    <div>
+      {{ counterStore.count }}-{{ counterStore.doubleCount }}
       <button @click="counterStore.increment">增加</button>
+      <button @click="counterStore.decrement">減少</button>
     </div>
     <div>
-      <button @click="counterStore.decrement">減少</button>
+      <button @click="test001.increment">增加</button>
+      {{ test001.count }}-{{ test001.double }}
+    </div>
+    <div>
+      <button @click="test002.increment">增加</button>
+      {{ test002.count }}-{{ test002.double }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { useCounterStore } from '../stores/modules/counter'
+import { useTest001 } from '../stores/modules/test-001'
+import { useTest002 } from '../stores/modules/test-002'
 const counterStore = useCounterStore()
+const test001 = useTest001();
+const test002 = useTest002();
+
+// const { name } = storeToRefs(testStore);
 </script>
 
 <style>
