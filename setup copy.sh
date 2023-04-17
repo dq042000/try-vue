@@ -65,7 +65,7 @@ echo $COLOR_YELLOW"(3) 模擬啟動正式環境"$COLOR_REST;
 echo $COLOR_YELLOW"(4) 匯入資料庫 $COLOR_GREEN(確保匯入前將資料庫清空及匯入檔案放置: ./web/api/data/sql) $COLOR_YELLOW"$COLOR_REST;
 echo $COLOR_YELLOW"(5) 執行 Migrate"$COLOR_REST;
 read -p "請輸入要執行的項目(1-5)[2]:" -r user_select
-user_select=${user_select:-2}
+user_select=${user_select:-2}   # 預設為 2
 
 ########################################
 # 第一次安裝
