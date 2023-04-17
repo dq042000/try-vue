@@ -31,28 +31,30 @@ cp docker-compose.yml.sample docker-compose.yml
 # Start container
 docker-compose up -d --build && echo "\e[1;42m啟動容器...成功\e[0m"
 
+# Install packages
+docker exec -it ${containerNamePrefix}_vue_1 yarn && echo "\e[1;42m安裝前端所需套件... 成功\e[0m\n"
+
 # 啟動服務
 StartServices () {
     # 第一次安裝
-    if [ "$1" = '-init' ]
-    then
-        # Install node modules
-        docker exec -it ${containerNamePrefix}_vite_1 yarn && echo "\e[1;42m安裝前端所需套件... 成功\e[0m\n"
-    fi
+    # if [ "$1" = '-init' ]
+    # then
+    #     # Start build
+    # fi
 
     # 測試啟動正式環境
     if [ "$1" = '-testbuild' ]
     then
         # Start build
         echo "\033[43m測試啟動正式環境\e[0m \n"
-        docker exec -it ${containerNamePrefix}_vite_1 yarn build
+        docker exec -it ${containerNamePrefix}_vue_1 yarn build
         return 16888
 
     # 啟動開發環境
     else
         # Start develop
         echo "\033[43m啟動開發環境\e[0m \n"
-        docker exec -it ${containerNamePrefix}_vite_1 yarn dev
+        docker exec -it ${containerNamePrefix}_vue_1 yarn dev
     fi
 }
 

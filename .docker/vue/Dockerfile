@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:19
 
 #RUN yarn create vite
 #RUN yarn global add @vue/cli

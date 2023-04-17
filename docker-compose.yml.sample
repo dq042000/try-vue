@@ -1,20 +1,25 @@
 version: '3.3'
 
 services:
-  memcached:
-    image: memcached
-    restart: always
-    ports:
-      - '11211'
+    vue:
+        build: .docker/vue    
+        working_dir: /www/vue
+        volumes:
+            - ./web:/www
+        ports:
+            - 3000:3000
+        stdin_open: true
+        tty: true
+        environment:
+            - NODE_ENV=development
+        networks:
+            - network
 
-  vite:
-    build: .docker/vue    
-    working_dir: /www/vite
-    volumes:
-      - ./web:/www
-    ports:
-      - 3000:3000
-    stdin_open: true
-    tty: true
-    environment:
-      - NODE_ENV=development
+networks:
+    network:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.58.0.0/16
+                  gateway: 172.58.0.1
