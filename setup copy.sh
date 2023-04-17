@@ -112,7 +112,7 @@ elif [ $user_select = 2 ]; then
     # Start develop
     docker exec -it ${containerNamePrefix}_vite_1 yarn dev
 
-    echo "$COLOR_BACKGROUND_YELLOW 啟動開發環境$COLOR_REST \n"
+    echo "$COLOR_BACKGROUND_YELLOW 啟動開發環境\e[0m \n"
     return 16888
 
 ########################################
@@ -152,7 +152,7 @@ elif [ $user_select = 4 ]; then
             fi
         done
     done
-    echo "$COLOR_BACKGROUND_YELLOW 資料匯入完成$COLOR_REST \n"
+    echo "$COLOR_BACKGROUND_YELLOW 資料匯入完成\e[0m \n"
     return 16666
 
 ########################################
@@ -167,16 +167,10 @@ elif [ $user_select = 5 ]; then
     read -p "請輸入要執行的項目(1-5):" migrate_select
     if [ $migrate_select = 1 ]; then
         read -p "$(echo $COLOR_GREEN"確定要執行嗎？ (yes/no) "$COLOR_REST"["$COLOR_YELLOW"yes"$COLOR_REST"]")" user_confirm
-
-        # 預設為yes
-        if [ -z "$user_confirm" ]
-        then
-            user_confirm="yes"
-        fi
+        user_confirm=${user_confirm:-yes}   # 預設為yes
 
         # yes 就執行
-        if [ "$user_confirm" = 'yes' ] || [ "$user_confirm" = 'YES' ]
-        then
+        if [ "$user_confirm" = 'yes' ] || [ "$user_confirm" = 'YES' ]; then
             rm -f ${dir}/web/data/temp/*
             docker exec -ti ${containerNamePrefix}_php_1 sh bin/export.sh ${MIGRATION_FILE}
             cp ${dir}/web/data/temp/*.php ${dir}/web/module/Base/src/Entity/
@@ -188,16 +182,10 @@ elif [ $user_select = 5 ]; then
 
     if [ $migrate_select = 2 ]; then
         read -p "$(echo $COLOR_GREEN"確定要執行嗎？ (yes/no) "$COLOR_REST"["$COLOR_YELLOW"yes"$COLOR_REST"]")" user_confirm
-
-        # 預設為yes
-        if [ -z "$user_confirm" ]
-        then
-            user_confirm="yes"
-        fi
+        user_confirm=${user_confirm:-yes}   # 預設為yes
 
         # yes 就執行
-        if [ "$user_confirm" = 'yes' ] || [ "$user_confirm" = 'YES' ]
-        then
+        if [ "$user_confirm" = 'yes' ] || [ "$user_confirm" = 'YES' ]; then
             rm -f ${dir}/web/data/temp/*
             docker exec -ti ${containerNamePrefix}_php_1 sh bin/export.sh ${MIGRATION_FILE}
         fi
@@ -205,16 +193,10 @@ elif [ $user_select = 5 ]; then
 
     if [ $migrate_select = 3 ]; then
         read -p "$(echo $COLOR_GREEN"確定要執行嗎？ (yes/no) "$COLOR_REST"["$COLOR_YELLOW"yes"$COLOR_REST"]")" user_confirm
-
-        # 預設為yes
-        if [ -z "$user_confirm" ]
-        then
-            user_confirm="yes"
-        fi
+        user_confirm=${user_confirm:-yes}   # 預設為yes
 
         # yes 就執行
-        if [ "$user_confirm" = 'yes' ] || [ "$user_confirm" = 'YES' ]
-        then
+        if [ "$user_confirm" = 'yes' ] || [ "$user_confirm" = 'YES' ]; then
             cp ${dir}/web/data/temp/*.php ${dir}/web/module/Base/src/Entity/
             docker exec -ti ${containerNamePrefix}_php_1 sh bin/doctrine.sh migrations:diff
         fi
@@ -223,16 +205,10 @@ elif [ $user_select = 5 ]; then
     if [ $migrate_select = 4 ]; then
         read -p "$(echo "請輸入要 "$COLOR_YELLOW"migrate"$COLOR_REST" 的版本號碼 ["$COLOR_YELLOW"ex.Version20221202033436"$COLOR_REST"]"):" version_number
         read -p "$(echo $COLOR_GREEN"確定要 migrate 嗎？ (yes/no) "$COLOR_REST"["$COLOR_YELLOW"yes"$COLOR_REST"]")" user_answer
-
-        # 預設為yes
-        if [ -z "$user_answer" ]
-        then
-            user_answer="yes"
-        fi
+        user_answer=${user_answer:-yes}   # 預設為yes
 
         # yes 就執行
-        if [ "$user_answer" = 'yes' ] || [ "$user_answer" = 'YES' ]
-        then
+        if [ "$user_answer" = 'yes' ] || [ "$user_answer" = 'YES' ]; then
             docker exec -ti ${containerNamePrefix}_php_1 bin/doctrine.sh migrations:migrate "${migrations_paths}${version_number}"
             # or 
             # docker exec -ti ${containerNamePrefix}_php_1 bin/doctrine.sh migrations:execute "Application\${version_number}" --up
@@ -241,21 +217,14 @@ elif [ $user_select = 5 ]; then
 
     if [ $migrate_select = 5 ]; then
         read -p "$(echo "請輸入要 "$COLOR_RED"還原"$COLOR_REST" 的版本號碼 ["$COLOR_YELLOW"ex.Version20221202033436"$COLOR_REST"]"):" version_number
-        if [ -z "$version_number" ]
-        then
+        if [ -z "$version_number" ]; then
             echo "${COLOR_RED}請輸入版本號碼${COLOR_REST}"
         else
             read -p "$(echo $COLOR_GREEN"確定要 "$COLOR_REST$COLOR_RED"還原"$COLOR_REST$COLOR_GREEN" 嗎？ (yes/no) "$COLOR_REST"["$COLOR_YELLOW"yes"$COLOR_REST"]")" user_answer
-
-            # 預設為yes
-            if [ -z "$user_answer" ]
-            then
-                user_answer="yes"
-            fi
+            user_answer=${user_answer:-yes}   # 預設為yes
 
             # yes 就執行
-            if [ "$user_answer" = 'yes' ] || [ "$user_answer" = 'YES' ]
-            then
+            if [ "$user_answer" = 'yes' ] || [ "$user_answer" = 'YES' ]; then
                 docker exec -ti ${containerNamePrefix}_php_1 bin/doctrine.sh migrations:execute "${migrations_paths}${version_number}" --down
             fi
         fi
