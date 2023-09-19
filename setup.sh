@@ -63,7 +63,7 @@ MainMenu() {
     echo $COLOR_YELLOW"|    (4) 更新 npm 套件                |"$COLOR_REST;
     echo $COLOR_YELLOW"|    (Q) 離開                         |"$COLOR_REST;
     echo $COLOR_YELLOW"======================================="$COLOR_REST;
-    read -p "請輸入要執行的項目($(tput setaf 2 )1-5$(tput sgr0))[$(tput setaf 3 )2$(tput sgr0)]:" -r user_select
+    read -p "請輸入要執行的項目($(tput setaf 2 )1-4$(tput sgr0))[$(tput setaf 3 )2$(tput sgr0)]:" -r user_select
     user_select=${user_select:-2}   # 預設為 2
     user_select_uppercase=$(echo "$user_select" | tr '[:upper:]' '[:lower:]')   # 轉換為小寫
 
@@ -109,8 +109,13 @@ MainMenu() {
     ########################################
     # 更新 npm 套件
     elif [ $user_select = 4 ]; then
+        # 取得資料夾名稱，因資料夾名稱是容器名稱的 prefix
+        dir=$(pwd)
+        fullPath="${dir%/}";
+        containerNamePrefix=${fullPath##*/}
+
         # Update node modules
-        docker exec -it ${containerNamePrefix}_vite_1 yarn && echo "$COLOR_BACKGROUND_GREEN 更新前端所需套件... 成功 $COLOR_REST"
+        docker exec -it ${containerNamePrefix}_vue_1 yarn && echo "$COLOR_BACKGROUND_GREEN 更新前端所需套件... 成功 $COLOR_REST"
         return 0
 
     ########################################
