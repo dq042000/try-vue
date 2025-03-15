@@ -1,10 +1,19 @@
 {
-  "compilerOptions": {
-    "composite": true, // 設定為 true 以啟用專案引用
-    "module": "esnext", // 設定使用 ES 模組系統
-    "moduleResolution": "node" // 設定使用 Node.js 的模組解析策略
-  },
+  "extends": "@tsconfig/node22/tsconfig.json",
   "include": [
-    "vite.config.ts" // 指定 TypeScript 編譯器要編譯的文件列表
-  ]
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "nightwatch.conf.*",
+    "playwright.config.*",
+    "eslint.config.*"
+  ],
+  "compilerOptions": {
+    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node"]
+  }
 }

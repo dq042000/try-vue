@@ -3,4 +3,4 @@
 # See https://docs.docker.com/compose/environment-variables/#the-env-file
 
 ### PORTS ###########################################
-VITE_PORT=3000
+VUE_PORT=3000

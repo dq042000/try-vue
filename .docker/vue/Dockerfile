@@ -1,12 +1,5 @@
-FROM node:19
-
-#RUN yarn create vite
-#RUN yarn global add @vue/cli
-#RUN yarn global add @vue/cli-init
+FROM node:20
 
 WORKDIR /www
 
-#COPY entrypoint.sh /entrypoint.sh
-#ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
-
-ENV HOST 0.0.0.0
+ENV HOST=0.0.0.0

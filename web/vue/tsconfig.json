@@ -1,42 +1,11 @@
 {
-  // 設定 TypeScript 編譯器的選項
-  "compilerOptions": {
-    "target": "esnext", // 設定 TypeScript 編譯目標為 ESNext
-    "module": "esnext", // 設定使用 ES 模組系統
-    "useDefineForClassFields": true, // 啟用 ESNext Class Fields 提案的定義方式
-    "moduleResolution": "node", // 設定使用 Node.js 的模組解析策略
-    "strict": true, // 啟用所有嚴格型別檢查選項
-    "jsx": "preserve", // 設定 JSX 語法的編譯方式
-    "sourceMap": true, // 生成 Source Map 文件以進行除錯
-    "resolveJsonModule": true, // 啟用對 JSON 模組的解析支持
-    "isolatedModules": true, // 設定每個文件都是獨立的模組，不會產生全域命名空間
-    "esModuleInterop": true, // 啟用對 ES 模組與 CommonJS 模組的互操作性支持
-    "lib": [ // 設定可用的內置型別定義檔
-      "esnext",
-      "dom",
-      "DOM.Iterable"
-    ],
-    "skipLibCheck": true, // 跳過檢查所有內置型別定義檔
-    "baseUrl": ".", // 設定相對路徑起點為當前目錄
-    "paths": { // 設定路徑別名
-      "@/*": [
-        "./src/*"
-      ]
-    }
-  },
-  // 指定 TypeScript 編譯器要編譯的文件列表
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "components.d.ts",
-    "auto-imports.d.ts"
-  ],
-  // 指定其他 TypeScript 專案的路徑，用於建立相依關係
+  "files": [],
   "references": [
     {
       "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
     }
   ]
 }

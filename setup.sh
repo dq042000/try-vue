@@ -1,29 +1,62 @@
 #!/bin/bash
 
+#####################################################################
+# 一旦任何命令返回非零的退出狀態，腳本將立即終止執行，而不會繼續執行後續命令
 set -e
 
-# color https://blog.csdn.net/qq_42372031/article/details/104137272
-COLOR_RED='\e[0;31m';
-COLOR_GREEN='\e[0;32m';
-COLOR_YELLOW='\e[0;33m';
-COLOR_BLUE='\e[0;34m';
-COLOR_REST='\e[0m'; # No Color
-COLOR_BACKGROUND_RED='\e[0;101m';
-COLOR_BACKGROUND_GREEN='\e[1;42m';
-COLOR_BACKGROUND_YELLOW='\e[1;43m';
-COLOR_BACKGROUND_BLUE_GREEN='\e[46m'; # 青色
+#####################################################################
+# Color https://blog.csdn.net/qq_42372031/article/details/104137272
+# 文字顏色
+COLOR_RED=$(tput setaf 1)
+COLOR_GREEN=$(tput setaf 2)
+COLOR_YELLOW=$(tput setaf 3)
+COLOR_BLUE=$(tput setaf 4)
+COLOR_REST=$(tput sgr0) # No Color
 
-RemoveContainer () {
+# 背景顏色
+COLOR_BACKGROUND_RED=$(tput setab 1)
+COLOR_BACKGROUND_GREEN=$(tput setab 2)
+COLOR_BACKGROUND_YELLOW=$(tput setab 3)
+COLOR_BACKGROUND_BLUE_GREEN=$(tput setab 6) # 青色
+COLOR_BACKGROUND_WHITE=$(tput setab 7)
+
+########################################
+# 檢查 docker-compose 是否存在
+# docker-compose 1.29.0 之後的版本，docker-compose 已經被整合到 docker 中，並改為使用 docker compose
+# 這邊使用 command -v docker-compose 來判斷是否存在 docker-compose
+# https://stackoverflow.com/questions/66514436/difference-between-docker-compose-and-docker-compose
+if command -v docker-compose != NULL; then
+    dockerCompose="docker-compose"
+else
+    dockerCompose="docker compose"
+fi
+
+RemoveContainer() {
     lastResult=$?
-    if [ $lastResult -ne 0 ] && [ $lastResult -ne 130 ] && [ $lastResult -ne 16888 ]; then
-        echo "$COLOR_BACKGROUND_RED 狀態:$lastResult, 啟動專案過程有錯誤，移除所有容器。 $COLOR_REST"
-        docker-compose down
-    elif [ $lastResult = 16888 ]; then
-        echo "$COLOR_BACKGROUND_RED 中止... $COLOR_REST"
-        docker-compose down
+    if [ $lastResult = 16888 ]; then
+        echo "$COLOR_BACKGROUND_RED 狀態:$lastResult，中止... $COLOR_REST"
+        ${dockerCompose} down
     fi
 }
 trap RemoveContainer EXIT
+
+#####################################################################
+# 先清空畫面
+clear
+
+#####################################################################
+# 取得資料夾名稱，因資料夾名稱是容器名稱的 prefix
+dir=$(pwd)
+fullPath="${dir%/}"
+containerNamePrefix=${fullPath##*/}
+echo "$COLOR_BACKGROUND_BLUE_GREEN 現在位置 - ${containerNamePrefix} $COLOR_REST"
+
+#####################################################################
+# 先檢查網段是否存在，如果不存在，則建立網段
+networkName=${containerNamePrefix}_network
+if [ -z "$(docker network ls | grep $networkName)" ]; then
+    docker network create $networkName && echo "$COLOR_BACKGROUND_GREEN 建立網段... 成功 $COLOR_REST"
+fi
 
 # 初始化
 Init() {
@@ -44,10 +77,8 @@ Init() {
 
 # 預設設定
 DefaultSetting() {
-    Init # 初始化
-
     # Start container
-    docker-compose up -d --build && echo "$COLOR_BACKGROUND_GREEN 啟動容器...成功 $COLOR_REST"
+    $dockerCompose up -d --build && echo "$COLOR_BACKGROUND_GREEN 啟動容器...成功 $COLOR_REST"
 
     # Install node modules
     docker exec -it ${containerNamePrefix}_vue_1 yarn && echo "$COLOR_BACKGROUND_GREEN 安裝前端所需套件... 成功 $COLOR_REST"
@@ -70,16 +101,17 @@ MainMenu() {
     ########################################
     # 專案初始化並啟動開發環境
     if [ $user_select = 1 ]; then
+        # 初始化
+        Init 
+
         # Run default setting
         DefaultSetting
-
-        # Change permission
-        sudo chmod 777 -R web/${PHP_DIRECTORY}/data
 
         # Start develop
         docker exec -it ${containerNamePrefix}_vue_1 yarn dev
 
         echo "$COLOR_BACKGROUND_YELLOW 專案初始化並啟動開發環境... 成功 $COLOR_REST"
+
         return 16888
 
     ########################################
@@ -92,6 +124,7 @@ MainMenu() {
         docker exec -it ${containerNamePrefix}_vue_1 yarn dev
 
         echo "$COLOR_BACKGROUND_YELLOW 啟動開發環境... 成功 $COLOR_REST"
+
         return 16888
 
     ########################################
@@ -104,28 +137,27 @@ MainMenu() {
         docker exec -it ${containerNamePrefix}_vue_1 yarn build
 
         echo "$COLOR_BACKGROUND_YELLOW 模擬啟動正式環境... 成功 $COLOR_REST"
+
         return 16888
 
     ########################################
     # 更新 npm 套件
     elif [ $user_select = 4 ]; then
-        # 取得資料夾名稱，因資料夾名稱是容器名稱的 prefix
-        dir=$(pwd)
-        fullPath="${dir%/}";
-        containerNamePrefix=${fullPath##*/}
-
         # Update node modules
         docker exec -it ${containerNamePrefix}_vue_1 yarn && echo "$COLOR_BACKGROUND_GREEN 更新前端所需套件... 成功 $COLOR_REST"
+        
         return 0
 
     ########################################
     # 離開
     elif [ "$user_select_uppercase" = 'q' ]; then
         clear
+
         return 0
 
     else
         echo "$COLOR_BACKGROUND_RED 請輸入要執行的指令... $COLOR_REST"
+
         return 0
     fi
 }
